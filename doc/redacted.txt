@@ -1,0 +1,29 @@
+*redacted.txt* The best way to ████ the ████.
+
+Author: Daniel Ballester Marques
+License: Same as Vim (see |license|)
+
+
+==============================================================================
+COMMANDS                                                   *redacted-commands*
+
+:Redact                                                              *:Redact*
+-------
+Redact some text.
+
+:Redact!                                                            *:Redact!*
+--------
+Clear all redacted text.
+
+
+==============================================================================
+MAPPINGS                                                      *chalk-mappings*
+
+<Plug>Redact                                                    *<Plug>Redact*
+------------
+In normal mode it works as an operator, in visual mode it just redacts the
+text in the visual selection.
+
+
+vim:tw=78:ts=8:ft=help:norl:
+
