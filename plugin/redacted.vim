@@ -1,42 +1,35 @@
 " redacted.vim - The best way to ████ the ████
 " Author:   Daniel Ballester Marques
-" Version:  0.1
+" Version:  0.2
 " License:  Same as Vim
 
 if exists("g:loaded_redacted") || &cp | finish | endif
 let g:loaded_redacted = 1
 
-highlight Redacted ctermfg=black ctermbg=black guifg=black guibg=black
-au ColorScheme * highlight Redacted
-    \ ctermfg=black ctermbg=black guifg=black guibg=black
+augroup Redacted
+    autocmd!
+    autocmd BufRead * call s:init()
+augroup END
 
-function! s:redact(visual)
-    let start = a:visual ? getpos("'<") : getpos("'[")
-    let end = a:visual ? getpos("'>") : getpos("']")
-    let lines = getline(start[1], end[1])
-    let lines[-1] = lines[-1][: end[2] - 1]
-    let lines[0] = lines[0][start[2] - 1:]
-    let escapedLines = []
-    for line in lines 
-        call add(escapedLines, escape(line, '\')) 
-    endfor
-    if !exists('w:redactedIDs') | let w:redactedIDs = [] | endif
-    call add(w:redactedIDs,
-        \ matchadd("Redacted", "\\V" . join(escapedLines, "\\n")))
+function! s:init()
+    let b:redactedFile = expand('%:h') . "/." . expand('%:t') . ".redacted"
+    if filereadable(b:redactedFile)
+        let patterns = filter(readfile(b:redactedFile), 'v:val != ""')
+        for pattern in patterns
+            call redacted#redact(0, pattern)
+        endfor
+    endif
 endfunction
 
-function! s:clear()
-    let i = 0
-    while i < len(w:redactedIDs)
-        silent! call matchdelete(w:redactedIDs[i])
-        silent! call remove(w:redactedIDs, i)
-        let i += 1
-    endwhile
+function! Redact(pattern)
+    call redacted#redact(0, a:pattern)
 endfunction
 
-command! -range=% -bang Redact if <bang>0 == 1 |
-    \ call s:clear() | else | call s:redact(1) | endif
+command! -range=0 -bang Redact if <bang>0 == 1 |
+    \ call redacted#clear(<range>) | else | call redacted#redact(1) | endif
 
-vnoremap <Plug>Redact :call <SID>redact(1)<CR>
-nnoremap <Plug>Redact :set opfunc=<SID>redact<CR>g@
+command! RedactedW call redacted#persist()
+
+xnoremap <silent> <Plug>Redact :call redacted#redact(1)<CR>
+nnoremap <silent> <Plug>Redact :set opfunc=redacted#redact<CR>g@
 

@@ -15,14 +15,28 @@ Redact some text.
 --------
 Clear all redacted text.
 
+:RedactedW                                                        *:RedactedW*
+--------
+Persist Redacted's highlighting, so your file will still look the same if you
+close it and open it again.
+
 
 ==============================================================================
-MAPPINGS                                                      *chalk-mappings*
+MAPPINGS                                                   *redacted-mappings*
 
 <Plug>Redact                                                    *<Plug>Redact*
 ------------
 In normal mode it works as an operator, in visual mode it just redacts the
 text in the visual selection.
+
+
+==============================================================================
+FUNCTIONS                                                 *redacted-functions*
+
+Redact('pattern')                                                     *Redact()*
+------------
+Use `call Redact('pattern')` to redact all text matching the specified regex
+pattern.
 
 
 vim:tw=78:ts=8:ft=help:norl:

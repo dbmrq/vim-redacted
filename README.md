@@ -12,6 +12,9 @@ You can also map an operator with `<Plug>Redact`:
     nmap <leader>r <Plug>Redact
     vmap <leader>r <Plug>Redact
 
+Use `:RedactedW` to persist your changes, so your file will still look the
+same if you close Vim and open it again.
+
 ## But *why*?
 
 I wrote Redacted because I often have to paraphrase something I wrote, but
