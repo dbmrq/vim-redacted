@@ -58,14 +58,10 @@ function! redacted#clear(visual)
 endfunction
 
 function! redacted#persist()
-    let patterns = []
-    for pattern in b:redacted
-        call add(patterns, pattern[1])
-    endfor
+    let patterns = s:getAllPatterns()
     let error = writefile(patterns, b:redactedFile)
     if error == 0
-        redraw
-        echo "Your Redacted patterns were saved to " . b:redactedFile
+        redraw | echo "Your Redacted patterns were saved to " . b:redactedFile
     else
         echom "There was a problem persisting your Redacted patters"
     endif

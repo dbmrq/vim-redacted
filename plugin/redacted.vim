@@ -8,7 +8,7 @@ let g:loaded_redacted = 1
 
 augroup Redacted
     autocmd!
-    autocmd BufRead * call s:init()
+    autocmd BufNewFile,BufRead * call s:init()
 augroup END
 
 function! s:init()
