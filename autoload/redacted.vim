@@ -34,7 +34,7 @@ endfunction
 
 function! s:getAllPatterns()
     let patterns = []
-    for pattern in b:redacted
+    for pattern in get(b:, 'redacted', [])
         call add(patterns, pattern[1])
     endfor
     return patterns
